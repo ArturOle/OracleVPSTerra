@@ -2,12 +2,14 @@ name: Terraform Validate & Plan
 
 on:
   push:
-    branches: [*]
+    branches:
+      - "*"
     paths:
       - '**.tf'
       - '**.tfvars'
   pull_request:
-    branches: [ * ]
+    branches:
+      - "*"
     paths:
       - '**.tf'
       - '**.tfvars'
