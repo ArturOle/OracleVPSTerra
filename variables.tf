@@ -4,7 +4,7 @@ variable "tenancy_ocid" {
 }
 
 variable "compartment_ocid" {
-  description = "Compartment OCID (usually same as tenancy for root compartment)"
+  description = "Compartment OCID"
   type        = string
 }
 
@@ -15,13 +15,18 @@ variable "region" {
 }
 
 variable "ssh_public_key" {
-  description = "Path to SSH public key file"
+  description = "Path to your SSH public key"
   type        = string
   default     = "~/.ssh/id_rsa.pub"
 }
 
+variable "allowed_ssh_ips" {
+  description = "List of IPs or CIDRs allowed to SSH"
+  default     = ["0.0.0.0/0"]   # Change this! Do not leave as 0.0.0.0/0
+}
+
 variable "instance_display_name" {
-  description = "Display name for the compute instance"
+  description = "Name of the compute instance"
   type        = string
-  default     = "ubuntu-a1-free"
+  default     = "ubuntu-a1-secure"
 }

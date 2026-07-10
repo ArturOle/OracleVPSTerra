@@ -1,4 +1,4 @@
-# Latest Ubuntu 24.04 Image
+# Ubuntu 24.04 Image
 data "oci_core_images" "ubuntu_24" {
   compartment_id           = var.compartment_ocid
   operating_system         = "Canonical Ubuntu"
@@ -36,10 +36,32 @@ resource "oci_core_instance" "ubuntu_a1" {
     ssh_authorized_keys = file(var.ssh_public_key)
     user_data = base64encode(<<-EOF
       #!/bin/bash
+      export DEBIAN_FRONTEND=noninteractive
+
       apt-get update && apt-get upgrade -y
-      apt-get install -y curl wget htop neofetch
+      apt-get install -y fail2ban ufw curl htop neofetch
+
+      # Hardening SSH
+      sed -i 's/#PasswordAuthentication yes/PasswordAuthentication no/' /etc/ssh/sshd_config
+      sed -i 's/#PermitRootLogin.*/PermitRootLogin no/' /etc/ssh/sshd_config
+      systemctl restart ssh
+
+      # Fail2Ban
+      systemctl enable --now fail2ban
+
+      # UFW Firewall - Allow all IPs from the list
+      ufw default deny incoming
+      ufw default allow outgoing
+
+      %{ for ip in var.allowed_ssh_ips ~}
+      ufw allow from ${ip} to any port 22 proto tcp
+      %{ endfor ~}
+
+      ufw --force enable
+
       echo "=================================================="
-      echo "Ubuntu 24.04 Ampere A1 Instance Ready!"
+      echo "Secure Ubuntu 24.04 Ampere A1 Instance Ready!"
+      echo "Allowed SSH IPs: ${join(", ", var.allowed_ssh_ips)}"
       echo "=================================================="
     EOF
     )
@@ -48,7 +70,6 @@ resource "oci_core_instance" "ubuntu_a1" {
   preserve_boot_volume = false
 }
 
-# Availability Domains
 data "oci_identity_availability_domains" "ads" {
   compartment_id = var.tenancy_ocid
 }

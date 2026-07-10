@@ -31,16 +31,19 @@ resource "oci_core_route_table" "public" {
 resource "oci_core_security_list" "public" {
   compartment_id = var.compartment_ocid
   vcn_id         = oci_core_vcn.main.id
-  display_name   = "public-sl"
+  display_name   = "public-sl-secure"
 
-  # SSH Access
-  ingress_security_rules {
-    protocol = "6" # TCP
-    source   = "0.0.0.0/0"
+  # Dynamic SSH rules for each allowed IP
+  dynamic "ingress_security_rules" {
+    for_each = var.allowed_ssh_ips
+    content {
+      protocol = "6"  # TCP
+      source   = ingress_security_rules.value
 
-    tcp_options {
-      min = 22
-      max = 22
+      tcp_options {
+        min = 22
+        max = 22
+      }
     }
   }
 

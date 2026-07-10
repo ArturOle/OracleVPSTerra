@@ -2,3 +2,8 @@ tenancy_ocid     = "ocid1.tenancy.oc1..xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 compartment_ocid = "ocid1.compartment.oc1..xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
 region           = "us-ashburn-1"
 ssh_public_key   = "~/.ssh/id_rsa.pub"
+allowed_ssh_ips  = [
+  "IP_HOME/32",
+  "IP_OFFICE/32",
+  "IP_SOMEWHERE/32"
+]
