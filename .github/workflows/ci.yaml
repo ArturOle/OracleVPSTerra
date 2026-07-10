@@ -1,22 +1,10 @@
 name: Terraform Validate & Plan
 
-on:
-  push:
-    branches:
-      - "**"
-    paths:
-      - '**.tf'
-      - '**.tfvars'
-  pull_request:
-    branches:
-      - "**"
-    paths:
-      - '**.tf'
-      - '**.tfvars'
+on: [push, pull_request]
 
 jobs:
   terraform:
-    name: Terraform Validate & Plan
+    name: Terraform CI
     runs-on: ubuntu-latest
 
     steps:

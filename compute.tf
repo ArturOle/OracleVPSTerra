@@ -53,9 +53,9 @@ resource "oci_core_instance" "ubuntu_a1" {
       ufw default deny incoming
       ufw default allow outgoing
 
-      %{ for ip in var.allowed_ssh_ips ~}
+      %{for ip in var.allowed_ssh_ips~}
       ufw allow from ${ip} to any port 22 proto tcp
-      %{ endfor ~}
+      %{endfor~}
 
       ufw --force enable
 
