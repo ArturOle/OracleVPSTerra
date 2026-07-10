@@ -1,34 +1,23 @@
-name: Terraform Validate & Plan
+name: Terraform Validate
 
 on:
   push:
-    branches:
-      - "**"
-    paths:
-      - '**.tf'
-      - '**.tfvars'
+    branches: [ "**" ]
   pull_request:
-    branches:
-      - "**"
-    paths:
-      - '**.tf'
-      - '**.tfvars'
+    branches: [ "**" ]
 
 jobs:
-  terraform:
-    name: Terraform Validate & Plan
+  validate:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
         with:
           terraform_version: "~1.9.0"
 
-      - name: Terraform Format Check
+      - name: Terraform Format
         run: terraform fmt -check
 
       - name: Terraform Init
