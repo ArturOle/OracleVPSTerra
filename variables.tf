@@ -22,7 +22,7 @@ variable "ssh_public_key" {
 
 variable "allowed_ssh_ips" {
   description = "List of IPs or CIDRs allowed to SSH"
-  default     = ["0.0.0.0/0"]   # Change this! Do not leave as 0.0.0.0/0
+  default     = ["0.0.0.0/0"] # Change this! Do not leave as 0.0.0.0/0
 }
 
 variable "instance_display_name" {

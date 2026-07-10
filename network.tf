@@ -37,7 +37,7 @@ resource "oci_core_security_list" "public" {
   dynamic "ingress_security_rules" {
     for_each = var.allowed_ssh_ips
     content {
-      protocol = "6"  # TCP
+      protocol = "6" # TCP
       source   = ingress_security_rules.value
 
       tcp_options {
